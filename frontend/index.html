@@ -91,7 +91,8 @@
     <section class="main-section">
       <div class="left">
         <h1 class="welcome-text">
-          Welcome back to your <span class="highlight">professional community</span>
+          Welcome back to your
+          <span class="highlight">professional community</span>
         </h1>
         <p>
           Connect with colleagues, learn new skills, and explore opportunities
@@ -111,12 +112,7 @@
           />
 
           <label>Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder=""
-            required
-          />
+          <input type="password" id="password" placeholder="" required />
 
           <button type="submit" class="signin-btn">Login</button>
 
@@ -154,11 +150,14 @@
         }
 
         try {
-          const res = await fetch("http://localhost:5000/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          });
+          const res = await fetch(
+            "https://linkedin-clone-appdost-m3go.onrender.com/api/auth/login",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            }
+          );
 
           const data = await res.json();
 

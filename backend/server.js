@@ -14,11 +14,15 @@ app.use(express.json());
 // ✅ Enable CORS (for frontend ports 5173 and 5174)
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: [
+      "http://localhost:5173",
+      "https://roaring-cajeta-c15d6f.netlify.app" // ✅ Netlify live link
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
+
 
 // ✅ Import and use routes
 const authRoutes = require("./routes/auth");
