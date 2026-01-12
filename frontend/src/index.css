@@ -1,178 +1,103 @@
-/* 🌐 Base Styling */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-dark: #0f0c29;
+  --bg-gradient: linear-gradient(135deg, #000000, #1a1a2e, #16213e);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.05);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --text-main: #e0e0e0;
+  --text-muted: #808080;
+  --accent: #00f2ea;
+  --accent-glow: 0 0 20px rgba(0, 242, 234, 0.5);
+  --danger: #ff0055;
+}
+
 body {
   margin: 0;
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f3f2ef;
-  color: #222;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* 🌀 Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 a {
   text-decoration: none;
-  color: #0a66c2;
-}
-
-/* 🔹 Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  padding: 12px 40px;
-  border-bottom: 1px solid #ddd;
-  position: sticky;
-  top: 0;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.logo span {
-  color: #0a66c2;
-  font-weight: 700;
-  font-size: 22px;
-}
-
-.join-link {
-  font-weight: 600;
-  color: #0a66c2;
-  border: 1px solid #0a66c2;
-  border-radius: 25px;
-  padding: 8px 18px;
+  color: var(--accent);
   transition: 0.3s;
 }
 
-.join-link:hover {
-  background-color: #eaf3ff;
+/* Animation for Recording Pulse */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    box-shadow: 0 0 0 0 rgba(255, 0, 85, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 20px rgba(255, 0, 85, 0);
+  }
+
+  100% {
+    transform: scale(0.8);
+    box-shadow: 0 0 0 0 rgba(255, 0, 85, 0);
+  }
 }
 
-/* 🧭 Main Section */
-.main-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 85vh;
-  padding: 0 50px;
-  gap: 80px;
+.recording-pulse {
+  animation: pulse-ring 2s infinite;
 }
 
-.left {
-  max-width: 480px;
+/* Waveform Bars Animation */
+@keyframes wave {
+  0% {
+    height: 10%;
+  }
+
+  50% {
+    height: 100%;
+  }
+
+  100% {
+    height: 10%;
+  }
 }
 
-.left h1 {
-  font-size: 46px;
-  font-weight: 600;
-  color: #1b1f23;
+.wave-bar {
+  width: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+  animation: wave 1s ease-in-out infinite;
 }
 
-.left h1 span {
-  color: #0a66c2;
+.wave-bar:nth-child(odd) {
+  animation-duration: 0.8s;
 }
 
-.left p {
-  margin-top: 10px;
-  font-size: 18px;
-  color: #666;
-  line-height: 1.6;
-}
-
-/* 💻 Form Box */
-.right {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 36px 32px;
-  width: 400px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.right h2 {
-  text-align: center;
-  color: #1b1f23;
-  margin-bottom: 24px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  font-size: 14px;
-  margin-bottom: 6px;
-  color: #333;
-}
-
-input {
-  margin-bottom: 14px;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-}
-
-input:focus {
-  outline: none;
-  border-color: #0a66c2;
-  box-shadow: 0 0 0 2px #eaf3ff;
-}
-
-/* Buttons */
-.signin-btn,
-.join-btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 25px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.signin-btn {
-  background-color: #0a66c2;
-  color: white;
-}
-
-.signin-btn:hover {
-  background-color: #004182;
-}
-
-.join-btn {
-  background-color: white;
-  color: #0a66c2;
-  border: 1px solid #0a66c2;
-}
-
-.join-btn:hover {
-  background-color: #eaf3ff;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 18px 0;
-}
-
-.divider hr {
-  flex: 1;
-  border: none;
-  border-top: 1px solid #ddd;
-}
-
-.divider span {
-  color: #777;
-  font-size: 14px;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  color: #777;
-  font-size: 14px;
-  padding: 20px 0;
+.wave-bar:nth-child(even) {
+  animation-duration: 1.1s;
 }

@@ -9,7 +9,8 @@ dotenv.config();
 
 // Initialize app
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // ✅ Enable CORS (Netlify + Local)
 const allowedOrigins = [
@@ -38,6 +39,8 @@ const authRoutes = require("./routes/auth");
 
 // Use routes with prefix
 app.use("/api/auth", authRoutes);
+app.use("/api/posts", require("./routes/posts"));
+app.use("/api/users", require("./routes/users"));
 
 // ✅ Default test route
 app.get("/", (req, res) => {

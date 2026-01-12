@@ -7,6 +7,9 @@ import {
   MessageCircle,
   Bell,
   X,
+  Zap,
+  Globe,
+  Compass,
 } from "lucide-react";
 import "./Navbar.css"; // animation ke liye optional CSS
 
@@ -27,55 +30,51 @@ export default function Navbar({ setActivePage }) {
       <nav className="flex justify-between items-center bg-white shadow-md p-4 sticky top-0 z-20">
         <div
           onClick={() => setActivePage("home")}
-          className="flex items-center gap-2 text-blue-600 font-bold text-lg cursor-pointer"
+          className="flex items-center gap-2 text-purple-600 font-bold text-lg cursor-pointer"
         >
-          <img
-            src="https://static.licdn.com/sc/h/1bt1uwq5akv756knzdj4l6cdc"
-            alt="LinkedIn"
-            className="w-7 h-7"
-          />
-          <span>LinkedIn</span>
+          <Zap size={28} className="fill-current" />
+          <span className="text-xl tracking-tight">Vybe</span>
         </div>
 
         <div className="flex items-center gap-6">
           <button
             onClick={() => setActivePage("home")}
-            className="text-gray-700 hover:text-blue-600 flex items-center gap-1"
+            className="text-gray-700 hover:text-purple-600 flex items-center gap-1"
           >
-            <Home size={18} /> Home
+            <Home size={18} /> Feed
           </button>
 
           <button
             onClick={() => setActivePage("network")}
-            className="text-gray-700 hover:text-blue-600 flex items-center gap-1"
+            className="text-gray-700 hover:text-purple-600 flex items-center gap-1"
           >
-            <Users size={18} /> My Network
+            <Globe size={18} /> Circle
           </button>
 
           <button
             onClick={() => setActivePage("jobs")}
-            className="text-gray-700 hover:text-blue-600 flex items-center gap-1"
+            className="text-gray-700 hover:text-purple-600 flex items-center gap-1"
           >
-            <Briefcase size={18} /> Jobs
+            <Compass size={18} /> Explore
           </button>
 
           <button
             onClick={() => setShowMessages(true)}
-            className="text-gray-700 hover:text-blue-600 flex items-center gap-1"
+            className="text-gray-700 hover:text-purple-600 flex items-center gap-1"
           >
             <MessageCircle size={18} /> Messaging
           </button>
 
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="text-gray-700 hover:text-blue-600 flex items-center gap-1 relative"
+            className="text-gray-700 hover:text-purple-600 flex items-center gap-1 relative"
           >
             <Bell size={18} /> Notifications
           </button>
 
           <button
             onClick={logoutUser}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md"
           >
             Logout
           </button>

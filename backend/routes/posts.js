@@ -16,12 +16,16 @@ router.get('/', async (req, res) => {
 // POST /api/posts -> create post (auth required)
 router.post('/', auth, async (req, res) => {
   try {
-    const { text, image, video } = req.body;
+    const { text, image, video, title, audioUrl, duration, category } = req.body;
     const newPost = new Post({
       userId: req.user.id,
       name: req.user.name,
       email: req.user.email,
+      title: title || '',
       text: text || '',
+      audioUrl: audioUrl || '',
+      duration: duration || '0:00',
+      category: category || 'General',
       image: image || '',
       video: video || '',
       timestamp: new Date()

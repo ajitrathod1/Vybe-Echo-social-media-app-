@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secretkey123';
+const JWT_SECRET = process.env.JWT_SECRET || 'devsecret';
 
 module.exports = function (req, res, next) {
   const token = req.header('x-auth-token') || req.header('authorization');
