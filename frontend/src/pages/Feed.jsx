@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {
-  Mic, Search, X, Radio
-} from "lucide-react";
+import { Mic, Search, X, Sparkles, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AudioCard from "../components/AudioCard";
 import Sidebar from "../components/Sidebar";
@@ -17,7 +15,6 @@ export default function Feed() {
   const [isRecording, setIsRecording] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
-  const [audioDuration, setAudioDuration] = useState("0:00");
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
 
@@ -60,10 +57,6 @@ export default function Feed() {
         const audioBlob = new Blob(audioChunksRef.current, { type: "audio/mp3" });
         setAudioBlob(audioBlob);
         setShowUploadModal(true);
-
-        // Calculate fake duration based on blob size (approx) or use Audio element to check
-        // For now, let's just mock duration or handle it properly later
-        setAudioDuration("0:XX");
       };
 
       mediaRecorderRef.current.start();
@@ -99,7 +92,7 @@ export default function Feed() {
             title,
             category,
             audioUrl: base64Audio,
-            duration: "0:45", // Mock duration for now
+            duration: "0:45",
             text: "Voice Note"
           },
           { headers: { "x-auth-token": localStorage.getItem("token") } }
@@ -118,116 +111,137 @@ export default function Feed() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-[#00f2ea] selection:text-black overflow-x-hidden font-['Space_Grotesk']">
+    <div className="min-h-screen bg-black text-white selection:bg-[#F47521] selection:text-black overflow-x-hidden font-['Outfit'] bg-halftone">
 
-      {/* 🔮 Background Glow Effects */}
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-100px] left-[-100px] w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[-100px] right-[-100px] w-[500px] h-[500px] bg-[#00f2ea]/5 rounded-full blur-[120px]"></div>
-      </div>
-
-      <div className="relative z-10 flex h-screen overflow-hidden">
-
-        {/* 🛸 Sidebar Navigation (Left) */}
+      <div className="relative z-10 flex min-h-screen">
         <Sidebar />
 
-        {/* 🌊 Main Feed Stream */}
-        <main className="flex-1 flex flex-col items-center overflow-y-auto px-4 pt-10 pb-32 scrollbar-hide w-full md:ml-24">
+        <main className="flex-1 flex flex-col items-center px-4 pt-10 pb-32 w-full md:ml-24 max-w-5xl mx-auto">
 
-          {/* Header / Search */}
-          <div className="w-full max-w-2xl mb-12 flex items-center justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-white mb-1"><span className="text-[#00f2ea]">Echo</span> Stream</h1>
-              <p className="text-gray-400 text-sm">Listen to the world's thoughts.</p>
+          {/* Header Banners */}
+          <div className="w-full mb-10 bg-[#111] border-2 border-[#333] rounded-[32px] p-8 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4">
+              <Sparkles className="text-[#F47521] w-10 h-10 animate-spin-slow" />
             </div>
-            <div className="relative group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-[#00f2ea] transition" size={18} />
-              <input
-                type="text"
-                placeholder="Find a voice..."
-                className="bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-[#00f2ea]/50 w-32 focus:w-64 transition-all"
-              />
+            <div className="relative z-10">
+              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 uppercase italic">
+                Live <span className="text-[#F47521]">LOUD.</span>
+              </h1>
+              <p className="text-gray-400 font-bold max-w-lg">
+                Discover the rawest voices from around the globe. No filters, just frequency.
+              </p>
             </div>
+            {/* Decorative Circles */}
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[#F47521] rounded-full blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
           </div>
 
-          {/* Echoes List */}
+          {/* Search Bar */}
+          <div className="w-full max-w-2xl mb-10 flex gap-4">
+            <div className="flex-1 relative group">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-[#F47521] transition-colors" size={24} strokeWidth={3} />
+              <input
+                type="text"
+                placeholder="FIND YOUR VIBE..."
+                className="w-full pl-14 pr-4 py-4 rounded-full bg-[#111] border-2 border-[#333] text-white font-bold placeholder:text-gray-600 focus:outline-none focus:border-[#F47521] transition-all uppercase tracking-wide"
+              />
+            </div>
+            <button className="px-6 rounded-full bg-[#F47521] text-black font-black hover:bg-white transition-colors">
+              FILTER
+            </button>
+          </div>
+
+          {/* Posts Grid */}
           {loading ? (
-            <div className="text-[#00f2ea] animate-pulse">Tuning in...</div>
+            <div className="flex flex-col items-center gap-4 py-20">
+              <div className="w-16 h-16 border-8 border-[#222] border-t-[#F47521] rounded-full animate-spin"></div>
+              <p className="text-[#F47521] font-bold uppercase tracking-widest text-sm animate-pulse">Loading Stream...</p>
+            </div>
           ) : (
-            <div className="w-full flex flex-col items-center gap-6">
-              {posts.length === 0 && <p className="text-gray-500">No echoes yet. Be the first to speak.</p>}
-              {posts.map((post, i) => (
-                <motion.div
-                  key={post._id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="w-full flex justify-center"
-                >
+            <div className="w-full max-w-2xl flex flex-col gap-6">
+              {Array.isArray(posts) && posts.length > 0 ? (
+                posts.map(post => (
                   <AudioCard
+                    key={post._id}
                     user={post.name}
-                    time={new Date(post.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    time={new Date(post.timestamp).toLocaleDateString()}
                     title={post.title}
                     category={post.category}
                     audioUrl={post.audioUrl}
                     duration={post.duration}
+                    likesCount={post.likes}
                   />
-                </motion.div>
-              ))}
+                ))
+              ) : (
+                <div className="text-gray-500 font-bold text-center border-2 border-dashed border-[#222] p-10 rounded-2xl uppercase tracking-widest">
+                  No signals detected yet. <br />
+                  <span className="text-[#F47521]">Broadcast yours!</span>
+                </div>
+              )}
             </div>
           )}
 
         </main>
 
-        {/* 🎙️ Floating Action Button (Record) */}
-        <div className="fixed bottom-10 right-10 z-50">
+        {/* 🎤 Floating Record Button (Crunchyroll Orange) */}
+        <div className="fixed bottom-8 right-8 z-50">
           <button
             onClick={toggleRecording}
-            className={`relative w-16 h-16 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 ${isRecording ? 'bg-red-500 scale-110' : 'bg-[#00f2ea] hover:scale-110 hover:shadow-[0_0_30px_#00f2ea]'}`}
+            className={`relative w-20 h-20 rounded-full flex items-center justify-center shadow-[4px_4px_0_#000] border-4 border-black transition-transform active:translate-y-1 active:shadow-none ${isRecording ? 'bg-white' : 'bg-[#F47521] hover:scale-105 btn-orange-pulse'}`}
           >
-            {isRecording && <div className="absolute inset-0 rounded-full border-4 border-red-500 recording-pulse"></div>}
-            <Mic size={28} className={isRecording ? 'text-white' : 'text-black'} fill={isRecording ? 'white' : 'none'} />
+            {isRecording ? (
+              <div className="w-8 h-8 bg-red-600 rounded-sm animate-pulse"></div>
+            ) : (
+              <Mic size={32} className="text-black" strokeWidth={3} />
+            )}
           </button>
         </div>
 
-        {/* 📤 Upload Modal */}
+        {/* Upload Modal */}
         <AnimatePresence>
           {showUploadModal && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4"
+              className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[60] p-4"
             >
               <motion.div
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-8 w-full max-w-md shadow-2xl"
+                initial={{ scale: 0.8, rotate: -5 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0.8, rotate: 5 }}
+                className="bg-[#111] border-4 border-[#333] rounded-[40px] p-8 w-full max-w-lg shadow-[0_0_0_10px_rgba(244,117,33,0.2)] relative overflow-hidden"
               >
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-white">Share Echo</h2>
-                  <button onClick={() => setShowUploadModal(false)} className="text-gray-400 hover:text-white"><X size={24} /></button>
+                <button onClick={() => setShowUploadModal(false)} className="absolute top-6 right-6 p-2 bg-[#222] hover:bg-white hover:text-black rounded-full transition text-white">
+                  <X size={24} strokeWidth={3} />
+                </button>
+
+                <div className="text-center mb-8">
+                  <div className="w-16 h-16 bg-[#F47521] text-black rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-black shadow-[0_0_20px_rgba(244,117,33,0.5)]">
+                    <Mic size={32} strokeWidth={3} />
+                  </div>
+                  <h2 className="text-3xl font-extrabold text-white uppercase italic">Broadcast This!</h2>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-6">
                   <div>
-                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Title / Thought</label>
+                    <label className="text-gray-500 font-bold uppercase text-xs ml-4 mb-2 block">Episode Title</label>
                     <input
+                      type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      placeholder="What's on your mind?"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-[#00f2ea] outline-none transition-colors"
+                      placeholder="WHAT'S HAPPENING?!"
+                      className="w-full p-5 rounded-2xl bg-black border-2 border-[#333] text-white font-bold text-lg focus:border-[#F47521] outline-none placeholder:text-gray-700"
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 block">Category</label>
-                    <div className="flex gap-2 flex-wrap">
-                      {['Thoughts', 'Music', 'Humor', 'Story', 'Tech'].map(cat => (
+                    <label className="text-gray-500 font-bold uppercase text-xs ml-4 mb-2 block">Tag It</label>
+                    <div className="flex gap-3 flex-wrap">
+                      {['Rant', 'Story', 'Music', 'Joke', 'News'].map(cat => (
                         <button
                           key={cat}
                           onClick={() => setCategory(cat)}
-                          className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${category === cat ? 'bg-[#00f2ea] text-black border-[#00f2ea]' : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30'}`}
+                          className={`px-5 py-2 rounded-xl text-sm font-black uppercase transform transition-all ${category === cat ? 'bg-[#F47521] text-black -rotate-2 border-2 border-white' : 'bg-[#222] text-gray-400 border-2 border-transparent hover:border-white'}`}
                         >
                           {cat}
                         </button>
@@ -238,13 +252,9 @@ export default function Feed() {
                   <button
                     onClick={handleUpload}
                     disabled={uploading}
-                    className="mt-4 w-full bg-gradient-to-r from-[#00f2ea] to-purple-600 text-black font-bold text-lg py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+                    className="mt-4 py-5 rounded-full bg-white text-black font-black text-xl hover:bg-[#F47521] hover:text-white transition-all flex items-center justify-center gap-2 shadow-[0_5px_0_#999] active:shadow-none active:translate-y-[5px]"
                   >
-                    {uploading ? 'Broadcasting...' : (
-                      <>
-                        Broadcast Echo <Radio size={20} />
-                      </>
-                    )}
+                    {uploading ? 'UPLOADING...' : 'GO LIVE NOW'}
                   </button>
                 </div>
               </motion.div>

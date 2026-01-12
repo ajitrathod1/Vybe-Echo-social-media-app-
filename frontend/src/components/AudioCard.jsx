@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { Play, Pause, Heart, MessageCircle, Share2, MoreHorizontal } from 'lucide-react';
+import React, { useState, useRef, useEffect } from "react";
+import { Play, Pause, Heart, MessageCircle, Share2, MoreHorizontal, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
-const AudioCard = ({ user, time, duration, title, category, audioUrl, likesCount = 0 }) => {
+const AudioCard = ({ user = "Anonymous", time, duration, title, category, audioUrl, likesCount = 0 }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [liked, setLiked] = useState(false);
-    const audioRef = React.useRef(new Audio(audioUrl));
+    const audioRef = useRef(new Audio(audioUrl));
 
-    React.useEffect(() => {
+    useEffect(() => {
         const audio = audioRef.current;
 
-        // Reset state when audio finishes
-        audio.onended = () => setIsPlaying(false);
+        const handleEnded = () => setIsPlaying(false);
+        audio.addEventListener('ended', handleEnded);
 
         if (isPlaying) {
             audio.play().catch(e => {
@@ -22,101 +23,103 @@ const AudioCard = ({ user, time, duration, title, category, audioUrl, likesCount
         }
 
         return () => {
+            audio.removeEventListener('ended', handleEnded);
             audio.pause();
         };
     }, [isPlaying]);
 
-    // Fake waveform bars
-    const bars = Array.from({ length: 40 });
-
     const togglePlay = () => {
-        // Create new audio object if URL changed (though typically won't in this list)
         if (audioRef.current.src !== audioUrl) {
             audioRef.current.src = audioUrl;
         }
         setIsPlaying(!isPlaying);
     };
 
+    const userName = user || "Anonymous";
+    const userInitial = userName.charAt(0).toUpperCase();
+
     return (
-        <div className="w-full max-w-2xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-2xl p-6 mb-6 hover:bg-[rgba(255,255,255,0.05)] transition-all duration-300">
-            {/* Header */}
-            <div className="flex justify-between items-start mb-4">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="bg-[#111] border-2 border-[#333] rounded-[24px] p-6 hover:border-[#F47521] transition-all duration-300 relative group overflow-hidden"
+        >
+            <div className="absolute inset-0 bg-halftone opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none"></div>
+
+            <div className="flex justify-between items-start mb-4 relative z-10">
                 <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-500 to-cyan-500 p-[2px]">
-                        <div className="w-full h-full rounded-full bg-black overflow-hidden flex items-center justify-center">
-                            <span className="text-lg font-bold text-white">{user[0]}</span>
-                        </div>
+                    <div className="w-12 h-12 rounded-full bg-[#333] border-2 border-[#F47521] flex items-center justify-center text-white font-black text-xl shadow-[2px_2px_0_#F47521]">
+                        {userInitial}
                     </div>
                     <div>
-                        <h3 className="text-white font-semibold text-lg hover:text-[#00f2ea] cursor-pointer">
-                            {user}
-                        </h3>
-                        <p className="text-gray-400 text-xs flex items-center gap-2">
-                            {time} • <span className="text-[#00f2ea]">{category}</span>
-                        </p>
+                        <h3 className="font-extrabold text-white text-lg leading-tight uppercase tracking-tight">{userName}</h3>
+                        <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">{time}</p>
                     </div>
                 </div>
-                <button className="text-gray-400 hover:text-white">
-                    <MoreHorizontal size={20} />
+                <button className="text-gray-400 hover:text-white p-2 hover:bg-[#222] rounded-full transition">
+                    <MoreHorizontal size={24} />
                 </button>
             </div>
 
-            {/* Title */}
-            <p className="text-gray-300 mb-4 text-sm leading-relaxed">
-                {title}
-            </p>
+            {/* Content */}
+            <div className="mb-4 relative z-10">
+                <h4 className="text-xl font-bold text-white leading-snug">{title}</h4>
+                {category && (
+                    <span className="inline-block mt-2 px-3 py-1 bg-[#F47521] text-black text-[10px] font-black uppercase tracking-wider rounded-md transform -skew-x-12">
+                        {category}
+                    </span>
+                )}
+            </div>
 
-            {/* Audio Player */}
-            <div className="bg-black/30 rounded-xl p-4 flex items-center gap-4 mb-5 border border-white/5">
+            {/* Audio Player Block */}
+            <div className="bg-black/80 rounded-2xl p-4 flex items-center gap-4 border border-[#333] group-hover:border-[#555] transition-colors relative z-10">
                 <button
                     onClick={togglePlay}
-                    className={`w-12 h-12 flex items-center justify-center rounded-full transition-all ${isPlaying
-                            ? 'bg-[#00f2ea] text-black shadow-[0_0_15px_rgba(0,242,234,0.4)]'
-                            : 'bg-white/10 text-white hover:bg-white/20'
+                    className={`w-12 h-12 flex items-center justify-center rounded-full transition-all border-2 border-transparent ${isPlaying
+                        ? 'bg-[#F47521] text-white shadow-[0_0_15px_rgba(244,117,33,0.6)] animate-pulse'
+                        : 'bg-[#222] text-white hover:bg-white hover:text-black hover:border-white'
                         }`}
                 >
-                    {isPlaying ? <Pause size={20} fill="black" /> : <Play size={20} fill="white" className="ml-1" />}
+                    {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" className="ml-1" />}
                 </button>
 
                 {/* Waveform Visualization */}
-                <div className="flex-1 h-12 flex items-center gap-[2px] overflow-hidden">
-                    {bars.map((_, i) => (
+                <div className="flex-1 flex items-center justify-center gap-[3px] h-8 overflow-hidden">
+                    {[...Array(35)].map((_, i) => (
                         <div
                             key={i}
-                            className={`w-1 rounded-full transition-all duration-300 ${isPlaying ? 'wave-bar' : 'h-1 bg-gray-600'}`}
-                            style={{
-                                animationDelay: `${Math.random() * 0.5}s`,
-                                height: isPlaying ? undefined : `${20 + Math.random() * 60}%` // Static random height when paused
-                            }}
+                            className={`w-[4px] rounded-full transition-all duration-300 ${isPlaying ? 'wave-bar bg-[#F47521]' : 'bg-[#333] h-[4px]'}`}
+                            style={isPlaying ? { animationDelay: `${i * 0.05}s` } : {}}
                         ></div>
                     ))}
                 </div>
 
-                <span className="text-xs text-gray-400 font-mono">{duration}</span>
+                <span className="text-xs font-black text-[#F47521] font-mono whitespace-nowrap bg-[#222] px-2 py-1 rounded">
+                    {duration || "0:00"}
+                </span>
             </div>
 
-            {/* Footer Actions */}
-            <div className="flex items-center justify-between text-gray-400 pt-2 border-t border-white/5">
+            {/* Actions */}
+            <div className="flex items-center justify-between mt-6 pt-4 border-t border-[#333] relative z-10">
                 <div className="flex gap-6">
                     <button
                         onClick={() => setLiked(!liked)}
-                        className={`flex items-center gap-2 text-sm transition-colors ${liked ? 'text-[#ff0055]' : 'hover:text-white'}`}
+                        className={`flex items-center gap-2 text-sm font-bold transition-transform active:scale-90 ${liked ? 'text-red-500' : 'text-gray-400 hover:text-white'}`}
                     >
-                        <Heart size={18} fill={liked ? '#ff0055' : 'none'} />
-                        <span>{liked ? '1.2k' : '1.2k'}</span>
+                        <Heart size={22} fill={liked ? "currentColor" : "none"} strokeWidth={2.5} />
+                        <span>{likesCount + (liked ? 1 : 0)}</span>
                     </button>
-                    <button className="flex items-center gap-2 text-sm hover:text-white transition-colors">
-                        <MessageCircle size={18} />
-                        <span>48</span>
-                    </button>
-                    <button className="flex items-center gap-2 text-sm hover:text-white transition-colors">
-                        <Share2 size={18} />
-                        <span>Share</span>
+                    <button className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-white transition-colors">
+                        <MessageCircle size={22} strokeWidth={2.5} />
+                        <span>Comment</span>
                     </button>
                 </div>
-                <span className="text-xs text-gray-500">248 listens</span>
+                <button className="text-gray-400 hover:text-[#F47521] transition-colors p-2 hover:bg-[#222] rounded-full">
+                    <Share2 size={22} strokeWidth={2.5} />
+                </button>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

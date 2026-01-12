@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Disc } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Signup() {
@@ -22,7 +22,7 @@ export default function Signup() {
       const data = await res.json();
 
       if (res.ok) {
-        alert("✅ Account created successfully! Please login.");
+        alert("✅ Account created successfully!");
         navigate("/");
       } else {
         alert(data.message || "Signup failed");
@@ -33,11 +33,11 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#050505] relative overflow-hidden font-['Space_Grotesk']">
+    <div className="flex justify-center items-center min-h-screen bg-black relative overflow-hidden font-['Outfit'] bg-halftone">
 
-      {/* Background Gradients */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-purple-900/15 rounded-full blur-[100px] pointer-events-none animate-pulse-slow"></div>
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-[#00f2ea]/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow"></div>
+      {/* 🟠 Decorations */}
+      <Sparkles className="absolute top-10 right-10 text-[#F47521] w-16 h-16 star-icon" />
+      <Sparkles className="absolute bottom-20 left-20 text-white w-10 h-10 star-icon" style={{ animationDelay: '1.5s' }} />
 
       <div className="flex flex-col lg:flex-row gap-20 items-center z-10 w-full max-w-6xl px-10">
 
@@ -46,54 +46,54 @@ export default function Signup() {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="hidden lg:flex flex-col gap-6 text-white flex-1"
+          className="hidden lg:flex flex-col gap-4 text-white flex-1"
         >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00f2ea] to-purple-600 flex items-center justify-center shadow-[0_0_30px_rgba(0,242,234,0.3)] mb-4"
-          >
-            <Disc className="text-black" size={32} />
-          </motion.div>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-12 h-12 rounded-full bg-[#F47521] flex items-center justify-center">
+              <span className="text-black font-black text-2xl tracking-tighter">Vy</span>
+            </div>
+            <span className="text-[#F47521] font-black text-3xl tracking-tight">VYBE ECHO</span>
+          </div>
 
-          <h1 className="text-6xl font-bold leading-tight">
-            Find your <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00f2ea] to-purple-400">
-              Voice.
-            </span>
+          <h1 className="text-7xl font-extrabold leading-[0.9] tracking-tight">
+            JOIN THE <br />
+            <span className="text-white bg-[#F47521] px-4 -rotate-2 inline-block transform mt-2">REVOLUTION.</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-lg leading-relaxed">
-            Join the world's first audio-exclusive social network. Connect through sound, not just text.
+          <p className="text-xl font-bold text-gray-400 mt-6 max-w-lg">
+            Don't just listen. Be heard. Create your account and start broadcasting your frequency to the world.
           </p>
+
+          <div className="flex gap-4 mt-4">
+            <div className="bg-[#222] px-6 py-3 rounded-xl border border-[#333] font-bold text-white">
+              🔥 Trending Topics
+            </div>
+            <div className="bg-[#222] px-6 py-3 rounded-xl border border-[#333] font-bold text-white">
+              🎙️ High Quality Audio
+            </div>
+          </div>
         </motion.div>
 
-        {/* Right Side: Glass Form */}
+        {/* Right Side: Bold Form */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="relative w-full max-w-[450px]"
         >
-          <motion.div
-            animate={{ y: [0, -15, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="p-10 rounded-3xl backdrop-blur-3xl bg-white/5 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] w-full max-w-[450px] relative overflow-hidden group hover:border-[#00f2ea]/30 transition-all duration-500"
-          >
-            {/* Gradient Border */}
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-purple-600 to-[#00f2ea]"></div>
+          <div className="bg-[#111] p-8 rounded-[32px] border-2 border-[#333] shadow-[0_0_0_10px_rgba(30,30,30,0.5)] relative">
 
-            {/* Floating Glow Orb behind card */}
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#00f2ea]/10 rounded-full blur-3xl pointer-events-none"></div>
+            {/* Decoration Circle */}
+            <div className="absolute -top-10 -left-10 w-24 h-24 bg-[#F47521] rounded-full blur-[40px] opacity-20 pointer-events-none"></div>
 
-            <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
-            <p className="text-gray-500 mb-8 text-sm">Join the frequency today.</p>
+            <h2 className="text-3xl font-extrabold text-white mb-2">CREATE ACCOUNT</h2>
+            <div className="w-16 h-2 bg-[#F47521] rounded-full mb-8"></div>
 
             <form onSubmit={handleSignup} className="flex flex-col gap-5">
               <div>
-                <label className="text-gray-400 text-xs font-bold uppercase tracking-wider ml-1">Full Name</label>
+                <label className="text-white text-sm font-bold uppercase tracking-wider ml-1">Full Name</label>
                 <input
                   type="text"
-                  className="w-full mt-2 p-4 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#00f2ea] focus:bg-[#00f2ea]/5 transition-all text-sm font-medium"
+                  className="w-full mt-2 p-4 rounded-xl bg-black border-2 border-[#333] text-white outline-none focus:border-[#F47521] transition-all font-bold placeholder:text-gray-700 hover:border-gray-500"
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -102,10 +102,10 @@ export default function Signup() {
               </div>
 
               <div>
-                <label className="text-gray-400 text-xs font-bold uppercase tracking-wider ml-1">Email Address</label>
+                <label className="text-white text-sm font-bold uppercase tracking-wider ml-1">Email Address</label>
                 <input
                   type="email"
-                  className="w-full mt-2 p-4 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#00f2ea] focus:bg-[#00f2ea]/5 transition-all text-sm font-medium"
+                  className="w-full mt-2 p-4 rounded-xl bg-black border-2 border-[#333] text-white outline-none focus:border-[#F47521] transition-all font-bold placeholder:text-gray-700 hover:border-gray-500"
                   placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -114,10 +114,10 @@ export default function Signup() {
               </div>
 
               <div>
-                <label className="text-gray-400 text-xs font-bold uppercase tracking-wider ml-1">Password</label>
+                <label className="text-white text-sm font-bold uppercase tracking-wider ml-1">Password</label>
                 <input
                   type="password"
-                  className="w-full mt-2 p-4 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#00f2ea] focus:bg-[#00f2ea]/5 transition-all text-sm font-medium"
+                  className="w-full mt-2 p-4 rounded-xl bg-black border-2 border-[#333] text-white outline-none focus:border-[#F47521] transition-all font-bold placeholder:text-gray-700 hover:border-gray-500"
                   placeholder="Min 6 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -128,19 +128,20 @@ export default function Signup() {
 
               <button
                 type="submit"
-                className="mt-4 py-4 rounded-xl bg-white text-black font-bold text-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2 group"
+                className="mt-6 w-full py-4 rounded-full bg-[#F47521] text-black font-black text-xl hover:bg-white hover:scale-[1.02] transition-all flex items-center justify-center gap-2 shadow-[0_10px_0_#d6641a] hover:shadow-[0_10px_0_#ccc] active:translate-y-[5px] active:shadow-[0_5px_0_#ccc]"
               >
-                Sign Up <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                SIGN UP <ArrowRight size={24} strokeWidth={3} />
               </button>
             </form>
 
-            <div className="mt-8 text-center">
-              <Link to="/" className="text-gray-400 hover:text-white text-sm">
-                Already have an account? <span className="text-[#00f2ea] underline">Log in</span>
+            <div className="mt-8 text-center bg-[#222] py-3 rounded-xl">
+              <span className="text-gray-400 font-bold text-sm">Already a member? </span>
+              <Link to="/" className="text-[#F47521] font-black hover:underline uppercase">
+                Log In
               </Link>
             </div>
 
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </div>

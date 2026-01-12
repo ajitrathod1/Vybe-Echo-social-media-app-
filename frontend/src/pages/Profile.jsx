@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import AudioCard from "../components/AudioCard";
-import { User, Mic, Settings, Calendar } from "lucide-react";
+import { User, Mic, Settings, Calendar, Edit3, Sparkles } from "lucide-react";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -23,7 +23,6 @@ export default function Profile() {
 
   const fetchUserEchoes = async (userId) => {
     try {
-      // Fetching all posts and filtering (can be optimized with a backend route)
       const res = await axios.get("http://localhost:5000/api/posts");
       const userPosts = res.data.filter((post) => post.userId === userId);
       setMyEchoes(userPosts);
@@ -37,12 +36,7 @@ export default function Profile() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-['Space_Grotesk'] overflow-x-hidden">
-
-      {/* Background Glow */}
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[20%] w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px]"></div>
-      </div>
+    <div className="min-h-screen bg-black text-white font-['Outfit'] overflow-x-hidden bg-halftone">
 
       <div className="relative z-10 flex min-h-screen">
         <Sidebar />
@@ -50,57 +44,73 @@ export default function Profile() {
         <div className="flex-1 px-4 md:px-10 py-10 md:ml-24 max-w-5xl mx-auto w-full">
 
           {/* Profile Header Card */}
-          <div className="relative w-full bg-white/5 border border-white/10 rounded-3xl p-8 mb-10 overflow-hidden">
-            {/* Decorative Gradient Bar */}
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#00f2ea] to-purple-600"></div>
+          <div className="relative w-full bg-[#111] border-2 border-[#333] rounded-[40px] p-10 mb-12 overflow-hidden group">
 
-            <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
+            {/* Decorative Elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#F47521] rounded-bl-full opacity-20"></div>
+            <Sparkles className="absolute top-10 right-10 text-[#F47521] w-8 h-8 animate-spin-slow" />
+
+            <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
 
               {/* Avatar */}
-              <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-br from-[#00f2ea] to-purple-600 shadow-[0_0_40px_rgba(0,242,234,0.2)]">
-                <div className="w-full h-full rounded-full bg-black flex items-center justify-center overflow-hidden">
-                  <span className="text-5xl font-bold text-white">{user.name[0]}</span>
+              <div className="w-40 h-40 rounded-full border-4 border-[#F47521] p-1 bg-black shadow-[10px_10px_0_#222] transform group-hover:-rotate-3 transition-transform duration-500">
+                <div className="w-full h-full rounded-full bg-[#222] flex items-center justify-center overflow-hidden">
+                  <span className="text-6xl font-black text-white">{user.name[0]}</span>
                 </div>
               </div>
 
               {/* User Info */}
               <div className="text-center md:text-left flex-1">
-                <h1 className="text-4xl font-bold mb-2 text-white">{user.name}</h1>
-                <p className="text-gray-400 mb-4">{user.email}</p>
+                <div className="flex flex-col md:flex-row items-center gap-4 mb-2">
+                  <h1 className="text-5xl font-extrabold text-white uppercase italic tracking-tighter">{user.name}</h1>
+                  <span className="bg-[#F47521] text-black text-xs font-black px-3 py-1 rounded uppercase">Pro Member</span>
+                </div>
 
-                <div className="flex items-center justify-center md:justify-start gap-6 text-sm text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <Mic size={16} className="text-[#00f2ea]" />
-                    <span>{myEchoes.length} Echoes</span>
+                <p className="text-gray-400 font-medium text-lg mb-6">{user.email}</p>
+
+                <div className="flex items-center justify-center md:justify-start gap-8">
+                  <div className="text-center md:text-left">
+                    <span className="block text-3xl font-black text-white">{myEchoes.length}</span>
+                    <span className="text-xs font-bold text-[#F47521] uppercase tracking-wider">Echoes</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar size={16} />
-                    <span>Joined recently</span>
+                  <div className="text-center md:text-left">
+                    <span className="block text-3xl font-black text-white">1.2k</span>
+                    <span className="text-xs font-bold text-[#F47521] uppercase tracking-wider">Followers</span>
+                  </div>
+                  <div className="text-center md:text-left">
+                    <span className="block text-3xl font-black text-white">340</span>
+                    <span className="text-xs font-bold text-[#F47521] uppercase tracking-wider">Following</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <button className="px-6 py-2 rounded-full border border-white/10 hover:bg-white/5 transition text-sm">Edit Profile</button>
-                <button className="p-2 rounded-full border border-white/10 hover:bg-white/5 transition"><Settings size={20} /></button>
+              <div className="flex flex-col gap-3">
+                <button className="px-8 py-3 rounded-full bg-white text-black font-black hover:bg-[#F47521] transition hover:scale-105 shadow-[4px_4px_0_#333]">Edit Profile</button>
+                <button className="p-3 rounded-full bg-[#222] text-gray-400 hover:text-white border-2 border-[#333] hover:border-white transition"><Settings size={24} /></button>
               </div>
 
             </div>
           </div>
 
           {/* User's Echoes */}
-          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-            <span className="w-2 h-8 bg-[#00f2ea] rounded-full"></span>
-            My Echoes
+          <h2 className="text-3xl font-black mb-8 flex items-center gap-3 uppercase italic">
+            <span className="w-3 h-10 bg-[#F47521] transform -skew-x-12"></span>
+            My Broadcasts
           </h2>
 
           {loading ? (
-            <div className="text-[#00f2ea] animate-pulse">Loading vibrations...</div>
+            <div className="text-[#F47521] animate-pulse font-bold tracking-widest text-center py-20">LOADING...</div>
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               {myEchoes.length === 0 ? (
-                <div className="text-gray-500 italic p-10 text-center border border-dashed border-white/10 rounded-2xl">
-                  No echoes captured yet. Use the mic to record your first thought.
+                <div className="text-gray-500 font-bold p-12 text-center border-2 border-dashed border-[#333] rounded-[30px] bg-[#111]">
+                  <p className="text-xl mb-4">SILENCE IS BORING.</p>
+                  <button
+                    onClick={() => navigate('/feed')}
+                    className="text-[#F47521] underline decoration-4 underline-offset-4 font-black text-lg hover:text-white"
+                  >
+                    RECORD SOMETHING NOW!
+                  </button>
                 </div>
               ) : (
                 myEchoes.map(post => (
